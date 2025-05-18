@@ -24,17 +24,16 @@ This is a Python-based application with a graphical user interface (GUI) for sea
 Clone this repository:
 
 git clone https://github.com/your-username/your-repository.git
-cd your-repository
 
 Install the required dependencies:
 
 pip install -r requirements.txt
 
-Usage
+##Usage
 
 Run the main script:
 
-python odev.py
+'python odev.py'
 
 Use the search bar in the GUI to find a movie by its title.
 
@@ -42,19 +41,19 @@ Save the movie details to the database if desired.
 
 
 
-##Dependencies
+## Dependencies
 
-Python 3.x
+-Python 3.x
 
-Tkinter
+-Tkinter
 
-SQLite3
+-SQLite3
 
-PIL (Pillow)
+-PIL (Pillow)
 
-Requests
+-Requests
 
-##About
+## About
 
 This project was created as part of an academic exercise by Çınar Ünver, 1st-year Computer Engineering student.
 
