@@ -130,7 +130,7 @@ def poster_goster(url, sayi=None):
         width=20
     )
     poster_button.pack(pady=2, anchor="w")  
-    poster_dugme_listesi[buton_metni] = poster_button
+    poster_buton_listesi[buton_metni] = poster_button
 
     poster_yukle(url)
 
