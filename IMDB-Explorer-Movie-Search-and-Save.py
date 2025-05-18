@@ -1,6 +1,6 @@
 import tkinter as tk
-from tkinter import scrolledtext 
-import sqlite3 
+from tkinter import scrolledtext
+import sqlite3
 import http.client
 import json
 import urllib
@@ -18,7 +18,7 @@ db_baglanti.execute("CREATE TABLE IF NOT EXISTS filmler (imdbID TEXT PRIMARY KEY
 db_cursor = db_baglanti.cursor()
 
 
-# Veritabanı Kontrol Mekanizması 
+# Veritabanı Kontrol Mekanizması
 def db_fetch_check(film_adi):
     db_cursor.execute("SELECT 1 FROM filmler WHERE lower(Title) = ?", (film_adi.strip().lower(),))
     sonuc = db_cursor.fetchone()
@@ -27,14 +27,14 @@ def db_fetch_check(film_adi):
 def arama_yap_ve_goster():
     
     def posterleri_temizle():
+        global poster_buton_listesi
         for widget in poster_buton_cercevesi.winfo_children():
             widget.destroy()
-    
-    posterleri_temizle()
+        poster_buton_listesi.clear()
 
-   
+    posterleri_temizle()
     
-    aranacak_film = entry.get() 
+    aranacak_film = entry.get()
     encoded_aranacak_film = urllib.parse.quote_plus(aranacak_film.strip().lower())
    # Veritabanından Veriyi Çekme
     if db_fetch_check(encoded_aranacak_film):
@@ -59,11 +59,11 @@ def arama_yap_ve_goster():
     conn = http.client.HTTPSConnection("api.collectapi.com")
     headers = {
         'content-type': "application/json",
-        'authorization': "apikey 1yIaiHX03yKVzn2NVXOm7O:6xTr8PQJ2zlw9qqRV5y481" 
+        'authorization': "apikey 1yIaiHX03yKVzn2NVXOm7O:6xTr8PQJ2zlw9qqRV5y481"
         }
     api_yolu = f"/imdb/imdbSearchByName?query={encoded_aranacak_film}"
 
-    print(f"API yolu: {api_yolu}") 
+    print(f"API yolu: {api_yolu}")
 
     conn.request("GET", api_yolu, headers=headers)
     res = conn.getresponse()
@@ -72,11 +72,11 @@ def arama_yap_ve_goster():
 
         
     ham_yanıt= data.decode("utf-8")
-    print(f"API Yanıtı (Ham):\n{ham_yanıt}") 
+    print(f"API Yanıtı (Ham):\n{ham_yanıt}")
     api_yanıtı_json = json.loads(ham_yanıt)
 
     sonuclar_yazı.config(state=tk.NORMAL)
-    sonuclar_yazı.delete(1.0, tk.END) 
+    sonuclar_yazı.delete(1.0, tk.END)
     
     # --- API Yanıtını İşle ve Arayüzde Göster ---
     
@@ -95,10 +95,10 @@ def arama_yap_ve_goster():
                     poster_goster(film.get('Poster'), poster_sayaci)
                     poster_sayaci += 1
             sonuclar_yazı.insert(tk.END, "---\n")
-            db_cursor.execute("INSERT OR IGNORE INTO filmler (imdbID, Title, Year, Type, Poster) VALUES (?, ?, ?, ?, ?)", 
+            db_cursor.execute("INSERT OR IGNORE INTO filmler (imdbID, Title, Year, Type, Poster) VALUES (?, ?, ?, ?, ?)",
                               (film.get("imdbID", ""), film.get("Title", ""), film.get("Year", ""), film.get("Type", ""), film.get("Poster", "")))
         db_baglanti.commit()
-    else : 
+    else :
         sonuclar_panel.config(text=f"'{aranacak_film}' araması için film bulunamadı.")
         sonuclar_yazı.insert(tk.END, f"'{aranacak_film}' araması için film bulunamadı.")
         return
@@ -113,26 +113,22 @@ def arama_yap_ve_goster():
 poster_buton_listesi = {}
 
 def poster_goster(url, sayi=None):
-    global poster_buton_listesi  
+    global poster_buton_listesi
 
     buton_metni = f"{sayi}. Poster" if sayi else "Poster"
 
-    
     if buton_metni in poster_buton_listesi:
-        poster_yukle(url)
         return
 
     poster_button = tk.Button(
         poster_buton_cercevesi,
         text=buton_metni,
         command=lambda u=url: poster_yukle(u),
-        anchor="w",  
+        anchor="w",
         width=20
     )
-    poster_button.pack(pady=2, anchor="w")  
+    poster_button.pack(pady=2, anchor="w")
     poster_buton_listesi[buton_metni] = poster_button
-
-    poster_yukle(url)
 
 def poster_yukle(url):
     poster_label.config(image='')
@@ -167,7 +163,7 @@ def veritabanı_goster():
     def veritabanı_arama():
         arama_kelimesi = veritabanı_entry.get().strip()
         sonuclar_yazı.config(state=tk.NORMAL)
-        sonuclar_yazı.delete(1.0, tk.END) 
+        sonuclar_yazı.delete(1.0, tk.END)
         sonuclar_yazı.insert(tk.END, f"'{arama_kelimesi}' araması için bulunan filmler")
         db_cursor.execute("SELECT Title, Year, imdbID, Type, Poster FROM filmler WHERE Title LIKE ?", ('%' + arama_kelimesi + '%',))
         filmler = db_cursor.fetchall()
@@ -188,7 +184,7 @@ def veritabanı_goster():
     sonuclar_yazı.pack(pady=5, padx=10, fill=tk.BOTH, expand=True)
     
     sonuclar_yazı.config(state=tk.NORMAL)
-    sonuclar_yazı.delete(1.0, tk.END) 
+    sonuclar_yazı.delete(1.0, tk.END)
     sonuclar_yazı.insert(tk.END, "Veritabanındaki Filmler:\n")
     db_cursor.execute("SELECT Title, Year, imdbID, Type, Poster FROM filmler")
     filmler = db_cursor.fetchall()
