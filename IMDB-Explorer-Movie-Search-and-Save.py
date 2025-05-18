@@ -9,10 +9,6 @@ import urllib.request
 import io
 from PIL import Image, ImageTk
 
-"""   Çınar Ünver Bilgisayar Mühendisliği 1. Sınıf 1241602024    """
-
-# AI kullandığım yerler SQL metinlerinde kullandım, 141 ve 155. satırlar arasındaki bir hatayı düzeltmek için kullandım.
-
 """ Bu kod, bir IMDB film arama ve kaydetme uygulamasıdır. Kullanıcı, bir film adı girerek arama yapabilir ve sonuçları görüntüleyebilir. Ayrıca, bulunan filmler veritabanına kaydedilir.
 Uygulama, SQLite veritabanı kullanarak film bilgilerini saklar ve CollectAPI üzerinden IMDB API'sine bağlanarak film bilgilerini alır. Posterini ve diğer bilgilerini gösterir."""
 
