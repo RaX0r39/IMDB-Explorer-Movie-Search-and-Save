@@ -1,6 +1,3 @@
-# IMDB Explorer Movie Search and Save
-
-
 # IMDB Movie Search and Save Application
 
 This is a Python-based application with a graphical user interface (GUI) for searching movies on IMDB and saving them into a local database. 
